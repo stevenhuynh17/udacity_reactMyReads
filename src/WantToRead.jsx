@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 import Book from './Book.jsx'
 
 class WantToRead extends Component {
-  state ={
-    status: "wantToRead"
-  }
-
   render() {
     const { books } = this.props
 
@@ -20,7 +16,7 @@ class WantToRead extends Component {
                   backgroundImage={book.backgroundImage}
                   title={book.title}
                   author={book.author}
-                  status={this.state.status}
+                  status={"wantToRead"}
                 />
               </li>
             ))}

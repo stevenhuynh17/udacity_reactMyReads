@@ -1,21 +1,26 @@
 import React, { Component } from 'react'
 
 class Book extends Component {
-  handleChange(event) {
-    if(event.target.value === "currentlyReading"){
-      console.log("IT WORKS")
-    }
+  state = {
+    status: this.props.status
+  }
+
+  handleChange = (event) => {
+    event.persist()
+    this.setState((currentState) => ({
+      status: event.target.value
+    }))
   }
 
   render() {
-    const { backgroundImage, title, author, status, currentlyReading } = this.props
+    const { backgroundImage, title, author } = this.props
 
     return(
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${backgroundImage})` }}></div>
           <div className="book-shelf-changer">
-            <select value={status} onChange={this.handleChange}>
+            <select value={this.state.status} onChange={this.handleChange}>
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
