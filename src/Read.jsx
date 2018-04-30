@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import Book from './Book.jsx'
 
 class Read extends Component {
+  state = {
+    value: "read"
+  }
+
   render() {
     const { books } = this.props
 
@@ -16,6 +20,7 @@ class Read extends Component {
                   backgroundImage={book.backgroundImage}
                   title={book.title}
                   author={book.author}
+                  status={this.state.value}
                 />
               </li>
             ))}

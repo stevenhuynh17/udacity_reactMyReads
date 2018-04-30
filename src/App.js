@@ -51,17 +51,45 @@ class BooksApp extends React.Component {
         title: "The Adventures of Tom Sawyer",
         author: "Mark Twain"
       }
-    ]
+    ],
+    bookshelf: []
   }
 
   componentDidMount() {
     BooksAPI.getAll()
       .then((data) => {
         console.log(data)
+        // this.setState(() => ({
+        //   data
+        // }))
       })
   }
 
+  moveToCurrentRead(book) {
+    this.setState((currentState) => ({
+      currentlyReading: currentState.currentlyReading.filter((data) => {
+
+        return data.title !== book.title
+      }),
+      wantToRead: currentState.wantToRead.concat([book])
+    }))
+  }
+
+  moveToWantRead() {
+
+  }
+
+  moveToRead() {
+
+  }
+
   render() {
+    const blah = {
+      backgroundImage: "",
+      title: "To Kill a Mockingbird",
+      author: "TESTING"
+    }
+
     return (
       <div className="app">
         <Route exact path="/" render={() => (
@@ -69,8 +97,14 @@ class BooksApp extends React.Component {
             <Header />
             <div className="list-books-content">
               <div>
-                <CurrentlyReading books={this.state.currentlyReading}/>
-                <WantToRead books={this.state.wantToRead}/>
+                <button onClick={() => this.moveToCurrentRead(blah)}>TESTING</button>
+                <CurrentlyReading
+                  books={this.state.currentlyReading}
+                />
+                <WantToRead
+                  books={this.state.wantToRead}
+                  currentlyReading={this.currentlyReading}
+                />
                 <Read books={this.state.read}/>
               </div>
             </div>
