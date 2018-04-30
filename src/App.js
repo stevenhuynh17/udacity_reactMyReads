@@ -135,8 +135,8 @@ class BooksApp extends React.Component {
                 />
                 <Read
                   books={this.state.read}
-                  moveToWantRead={this.state.moveToWantRead}
-                  moveToCurrentRead={this.state.moveToCurrentRead}
+                  moveToWantRead={this.moveToWantRead}
+                  moveToCurrentRead={this.moveToCurrentRead}
                 />
               </div>
             </div>
