@@ -3,7 +3,7 @@ import Book from './Book.jsx'
 
 class WantToRead extends Component {
   render() {
-    const { books } = this.props
+    const { books, moveToCurrentRead, moveToRead } = this.props
 
     return(
       <div className="bookshelf">
@@ -17,6 +17,8 @@ class WantToRead extends Component {
                   title={book.title}
                   author={book.author}
                   status={"wantToRead"}
+                  moveToCurrentRead={moveToCurrentRead}
+                  moveToRead={moveToRead}
                 />
               </li>
             ))}

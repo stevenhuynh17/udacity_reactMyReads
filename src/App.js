@@ -65,22 +65,47 @@ class BooksApp extends React.Component {
       })
   }
 
-  moveToCurrentRead(book) {
-    this.setState((currentState) => ({
-      currentlyReading: currentState.currentlyReading.filter((data) => {
+  deleteCurrent = (book) => {
+    if(book.status === "wantToRead"){
+      this.setState((currentState) => ({
+        wantToRead: currentState.wantToRead.filter((content) => {
+          return content.title !== book.title
+        })
+      }))
+    } else if(book.status === "currentlyReading"){
+      this.setState((currentState) => ({
+        currentlyReading: currentState.currentlyReading.filter((content) => {
+          return content.title !== book.title
+        })
+      }))
+    } else if(book.status === "read"){
+      this.setState((currentState) => ({
+        read: currentState.read.filter((content) => {
+          return content.title !== book.title
+        })
+      }))
+    }
+  }
 
-        return data.title !== book.title
-      }),
+  moveToCurrentRead = (book) => {
+    this.setState((currentState) => ({
+      currentlyReading: currentState.currentlyReading.concat([book])
+    }))
+    this.deleteCurrent(book)
+  }
+
+  moveToWantRead = (book) => {
+    this.setState((currentState) => ({
       wantToRead: currentState.wantToRead.concat([book])
     }))
+    this.deleteCurrent(book)
   }
 
-  moveToWantRead() {
-
-  }
-
-  moveToRead() {
-
+  moveToRead = (book) => {
+    this.setState((currentState) => ({
+      read: currentState.read.concat([book])
+    }))
+    this.deleteCurrent(book)
   }
 
   render() {
@@ -100,12 +125,19 @@ class BooksApp extends React.Component {
                 <button onClick={() => this.moveToCurrentRead(blah)}>TESTING</button>
                 <CurrentlyReading
                   books={this.state.currentlyReading}
+                  moveToWantRead={this.moveToWantRead}
+                  moveToRead={this.moveToRead}
                 />
                 <WantToRead
                   books={this.state.wantToRead}
-                  currentlyReading={this.currentlyReading}
+                  moveToCurrentRead={this.moveToCurrentRead}
+                  moveToRead={this.moveToRead}
                 />
-                <Read books={this.state.read}/>
+                <Read
+                  books={this.state.read}
+                  moveToWantRead={this.state.moveToWantRead}
+                  moveToCurrentRead={this.state.moveToCurrentRead}
+                />
               </div>
             </div>
             <div className="open-search">

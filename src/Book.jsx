@@ -6,10 +6,25 @@ class Book extends Component {
   }
 
   handleChange = (event) => {
-    event.persist()
-    this.setState((currentState) => ({
-      status: event.target.value
-    }))
+    if(event.target.value === "currentlyReading"){
+      this.props.moveToCurrentRead(this.props)
+      event.persist()
+      this.setState((currentState) => ({
+        status: event.target.value
+      }))
+    } else if(event.target.value === "wantToRead"){
+      this.props.moveToWantRead(this.props)
+      event.persist()
+      this.setState((currentState) => ({
+        status: event.target.value
+      }))
+    } else if(event.target.value === "read"){
+      this.props.moveToRead(this.props)
+      event.persist()
+      this.setState((currentState) => ({
+        status: event.target.value
+      }))
+    }
   }
 
   render() {
