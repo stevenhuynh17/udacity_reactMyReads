@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import Book from './Book.jsx'
 
 class Search extends Component {
   state = {
     query: ""
   }
-  
+
   render() {
+    const { books, moveToRead, moveToWantRead, moveToCurrentRead } = this.props
     return(
       <div className="search-books">
         <div className="search-books-bar">
@@ -27,7 +29,21 @@ class Search extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            {books.map((book) => (
+              <li key={book.title}>
+                <Book
+                  backgroundImage={book.imageLinks.thumbnail}
+                  title={book.title}
+                  author={book.author}
+                  status={"none"}
+                  moveToRead={moveToRead}
+                  moveToWantRead={moveToWantRead}
+                  moveToCurrentRead={moveToCurrentRead}
+                />
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     )

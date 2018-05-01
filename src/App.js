@@ -59,9 +59,9 @@ class BooksApp extends React.Component {
     BooksAPI.getAll()
       .then((data) => {
         console.log(data)
-        // this.setState(() => ({
-        //   data
-        // }))
+        this.setState((currentState) => ({
+          bookshelf: data
+        }))
       })
   }
 
@@ -122,7 +122,6 @@ class BooksApp extends React.Component {
             <Header />
             <div className="list-books-content">
               <div>
-                <button onClick={() => this.moveToCurrentRead(blah)}>TESTING</button>
                 <CurrentlyReading
                   books={this.state.currentlyReading}
                   moveToWantRead={this.moveToWantRead}
@@ -149,7 +148,12 @@ class BooksApp extends React.Component {
           </div>
         )}/>
         <Route path="/search" render={() => (
-          <Search />
+          <Search
+            books={this.state.bookshelf}
+            moveToWantRead={this.moveToWantRead}
+            moveToCurrentRead={this.moveToCurrentRead}
+            moveToRead={this.moveToRead}
+          />
         )}/>
       </div>
     )}
