@@ -25,9 +25,8 @@ class Search extends Component {
 
     const showBooks = query === "" ? [] : books.filter((content) => (
       this.findAuthor(content, query)
-      // console.log(content.authors.forEach((author) => {
-      //   author.toLowerCase().includes(query.toLowerCase())
-      // }))
+      ||
+      content.title.toLowerCase().includes(query.toLowerCase())
     ))
 
     return(
