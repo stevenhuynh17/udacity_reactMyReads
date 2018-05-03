@@ -13,9 +13,9 @@ class currentlyReading extends Component {
             {books.map((book) => (
               <li key={book.title}>
                 <Book
-                  backgroundImage={book.backgroundImage}
+                  backgroundImage={book.imageLinks.thumbnail}
                   title={book.title}
-                  author={[book.author]}
+                  author={book.authors}
                   status={"currentlyReading"}
                   moveToRead={moveToRead}
                   moveToWantRead={moveToWantRead}

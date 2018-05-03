@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
 import Book from './Book.jsx'
+
 
 class Search extends Component {
   state = {
@@ -23,11 +25,15 @@ class Search extends Component {
     const { query } = this.state
     const { books, moveToRead, moveToWantRead, moveToCurrentRead } = this.props
 
-    const showBooks = query === "" ? [] : books.filter((content) => (
-      this.findAuthor(content, query)
-      ||
-      content.title.toLowerCase().includes(query.toLowerCase())
-    ))
+    // const showBooks = query === "" ? [] : books.filter((content) => (
+    //   this.findAuthor(content, query)
+    //   ||
+    //   content.title.toLowerCase().includes(query.toLowerCase())
+    // ))
+
+    const showBooks = query === "" ? [] : BooksAPI.search(query).then((data) => {
+      console.log(data)
+    })
 
     return(
       <div className="search-books">
@@ -51,6 +57,7 @@ class Search extends Component {
               value={query}
               onChange={(event) => this.updateQuery(event.target.value)}
             />
+          <input />
           <p>{query}</p>
           </div>
         </div>
