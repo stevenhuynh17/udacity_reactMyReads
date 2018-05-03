@@ -15,7 +15,7 @@ class currentlyReading extends Component {
                 <Book
                   backgroundImage={book.backgroundImage}
                   title={book.title}
-                  author={book.author}
+                  author={[book.author]}
                   status={"currentlyReading"}
                   moveToRead={moveToRead}
                   moveToWantRead={moveToWantRead}

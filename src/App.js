@@ -109,11 +109,7 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    const blah = {
-      backgroundImage: "",
-      title: "To Kill a Mockingbird",
-      author: "TESTING"
-    }
+
 
     return (
       <div className="app">
