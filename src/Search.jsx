@@ -21,9 +21,11 @@ class Search extends Component {
     })
   }
 
+
+
   render() {
     const { query } = this.state
-    const { books, moveToRead, moveToWantRead, moveToCurrentRead } = this.props
+    const { books } = this.props
 
     // const showBooks = query === "" ? [] : books.filter((content) => (
     //   this.findAuthor(content, query)
@@ -31,8 +33,12 @@ class Search extends Component {
     //   content.title.toLowerCase().includes(query.toLowerCase())
     // ))
 
-    const showBooks = query === "" ? [] : BooksAPI.search(query).then((data) => {
-      console.log(data)
+    // const showBooks = query === "" ? [] : BooksAPI.search(query).then((data) => {
+    //   console.log(data)
+    // })
+
+    const showBooks = BooksAPI.search(query).then((data) => {
+
     })
 
     return(
@@ -70,9 +76,6 @@ class Search extends Component {
                   title={book.title}
                   author={book.authors}
                   status={"none"}
-                  moveToRead={moveToRead}
-                  moveToWantRead={moveToWantRead}
-                  moveToCurrentRead={moveToCurrentRead}
                 />
               </li>
             ))}

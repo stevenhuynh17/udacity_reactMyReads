@@ -2,8 +2,12 @@ import React, { Component } from 'react'
 import Book from './Book.jsx'
 
 class currentlyReading extends Component {
+  state = {
+    status: "currentlyReading"
+  }
+
   render() {
-    const { books, moveToRead, moveToWantRead } = this.props
+    const { books } = this.props
 
     return(
       <div className="bookshelf">
@@ -16,9 +20,9 @@ class currentlyReading extends Component {
                   backgroundImage={book.imageLinks.thumbnail}
                   title={book.title}
                   author={book.authors}
-                  status={"currentlyReading"}
-                  moveToRead={moveToRead}
-                  moveToWantRead={moveToWantRead}
+                  status={this.state.status}
+                  handleChange={this.props.handleChange}
+                  book={book}
                 />
               </li>
             ))}

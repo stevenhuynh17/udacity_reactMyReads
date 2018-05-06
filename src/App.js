@@ -13,71 +13,52 @@ class BooksApp extends React.Component {
   state = {
     currentlyReading: [],
     wantToRead: [],
-    read: []
+    read: [],
+    status: ""
   }
 
   componentDidMount() {
     BooksAPI.getAll()
       .then((data) => {
-        console.log(data)
         data.forEach((book) => {
           if(book.shelf === "wantToRead"){
-            this.moveToRead(book)
+            this.setState((currentState) => ({
+              wantToRead: currentState.wantToRead.concat([book])
+            }))
           } else if(book.shelf === "currentlyReading"){
-            this.moveToCurrentRead(book)
+            this.setState((currentState) => ({
+              currentlyReading: currentState.currentlyReading.concat([book])
+            }))
           } else if(book.shelf === "read"){
-            this.moveToRead(book)
+            this.setState((currentState) => ({
+              read: currentState.read.concat([book])
+            }))
           }
         })
       })
   }
 
-  deleteCurrent = (book) => {
-    if(book.status === "wantToRead"){
+  handleChange = (book, event) => {
+    console.log(this, "THIS")
+    if(event.target.value === "currentlyReading"){
       this.setState((currentState) => ({
-        wantToRead: currentState.wantToRead.filter((content) => {
-          return content.title !== book.title
-        })
+        status: "currentlyReading"
       }))
-    } else if(book.status === "currentlyReading"){
+      BooksAPI.update(book, "currentlyReading")
+    } else if(event.target.value === "wantToRead"){
       this.setState((currentState) => ({
-        currentlyReading: currentState.currentlyReading.filter((content) => {
-          return content.title !== book.title
-        })
+        status: "wantToRead"
       }))
-    } else if(book.status === "read"){
+      BooksAPI.update(book, "wantToRead")
+    } else if(event.target.value === "read"){
       this.setState((currentState) => ({
-        read: currentState.read.filter((content) => {
-          return content.title !== book.title
-        })
+        status: "read"
       }))
+      BooksAPI.update(book, "read")
     }
   }
 
-  moveToCurrentRead = (book) => {
-    this.setState((currentState) => ({
-      currentlyReading: currentState.currentlyReading.concat([book])
-    }))
-    this.deleteCurrent(book)
-  }
-
-  moveToWantRead = (book) => {
-    this.setState((currentState) => ({
-      wantToRead: currentState.wantToRead.concat([book])
-    }))
-    this.deleteCurrent(book)
-  }
-
-  moveToRead = (book) => {
-    this.setState((currentState) => ({
-      read: currentState.read.concat([book])
-    }))
-    this.deleteCurrent(book)
-  }
-
   render() {
-
-
     return (
       <div className="app">
         <Route exact path="/" render={() => (
@@ -87,18 +68,15 @@ class BooksApp extends React.Component {
               <div>
                 <CurrentlyReading
                   books={this.state.currentlyReading}
-                  moveToWantRead={this.moveToWantRead}
-                  moveToRead={this.moveToRead}
+                  handleChange={this.handleChange}
                 />
                 <WantToRead
                   books={this.state.wantToRead}
-                  moveToCurrentRead={this.moveToCurrentRead}
-                  moveToRead={this.moveToRead}
+                  handleChange={this.handleChange}
                 />
                 <Read
                   books={this.state.read}
-                  moveToWantRead={this.moveToWantRead}
-                  moveToCurrentRead={this.moveToCurrentRead}
+                  handleChange={this.handleChange}
                 />
               </div>
             </div>
@@ -113,9 +91,6 @@ class BooksApp extends React.Component {
         <Route path="/search" render={() => (
           <Search
             books={this.state.bookshelf}
-            moveToWantRead={this.moveToWantRead}
-            moveToCurrentRead={this.moveToCurrentRead}
-            moveToRead={this.moveToRead}
           />
         )}/>
       </div>
