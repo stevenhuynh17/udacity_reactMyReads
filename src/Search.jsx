@@ -2,29 +2,53 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book.jsx'
+import unavail from './unavail.jpg'
 
 
 class Search extends Component {
   state = {
-    query: ""
+    query: "",
+    bookshelf: []
   }
+
 
   updateQuery = (query) => {
     this.setState(() => ({
       query: query.trim()
     }))
+    if(query === ""){
+      this.setState((currentState) => ({
+        bookshelf: []
+      }))
+    } else {
+      BooksAPI.search(query)
+        .then((data) => {
+          this.setState((currentState) => ({
+            bookshelf: data
+          }))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 
-  findAuthor = (content, query) => {
-    return content.authors.some((author) => {
-      return author.toLowerCase().includes(query.toLowerCase())
-    })
+  // findAuthor = (content, query) => {
+  //   return content.authors.some((author) => {
+  //     return author.toLowerCase().includes(query.toLowerCase())
+  //   })
+  // }
+
+  checkImage = (book) => {
+    if(book.imageLinks === undefined){
+      console.log("NO IMAGE")
+    } else {
+      return book.imageLinks.thumbnail
+    }
   }
-
-
 
   render() {
-    const { query } = this.state
+    const { query, bookshelf } = this.state
     const { books } = this.props
 
     // const showBooks = query === "" ? [] : books.filter((content) => (
@@ -32,14 +56,6 @@ class Search extends Component {
     //   ||
     //   content.title.toLowerCase().includes(query.toLowerCase())
     // ))
-
-    // const showBooks = query === "" ? [] : BooksAPI.search(query).then((data) => {
-    //   console.log(data)
-    // })
-
-    const showBooks = BooksAPI.search(query).then((data) => {
-
-    })
 
     return(
       <div className="search-books">
@@ -63,24 +79,27 @@ class Search extends Component {
               value={query}
               onChange={(event) => this.updateQuery(event.target.value)}
             />
-          <input />
-          <p>{query}</p>
           </div>
         </div>
-        <div className="search-books-results">
-          <ol className="books-grid">
-            {showBooks.map((book) => (
-              <li key={book.title}>
-                <Book
-                  backgroundImage={book.imageLinks.thumbnail}
-                  title={book.title}
-                  author={book.authors}
-                  status={"none"}
-                />
-              </li>
-            ))}
-          </ol>
-        </div>
+        {this.state.bookshelf.length >= 0 &&(
+          <div className="search-books-results">
+            <ol className="books-grid">
+              {bookshelf.map((book) => (
+                console.log(book),
+                <li key={book.id}>
+                  <Book
+                    backgroundImage={this.checkImage(book)}
+                    title={book.title}
+                    author={book.authors || []}
+                    status={"none"}
+                    handleChange={this.props.handleChange}
+                    book={book}
+                  />
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
       </div>
     )
   }

@@ -3,11 +3,10 @@ import React, { Component } from 'react'
 class Book extends Component {
   render() {
     const { backgroundImage, title, author, status, handleChange, book } = this.props
-    console.log(handleChange)
     return(
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${backgroundImage})` }}></div>
+          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${backgroundImage})`}}></div>
           <div className="book-shelf-changer">
             <select defaultValue={status} onChange={(e) => handleChange(book, e)}>
               <option disabled>Move to...</option>
