@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book.jsx'
-import unavail from './unavail.jpg'
-
 
 class Search extends Component {
   state = {
@@ -33,29 +31,9 @@ class Search extends Component {
     }
   }
 
-  // findAuthor = (content, query) => {
-  //   return content.authors.some((author) => {
-  //     return author.toLowerCase().includes(query.toLowerCase())
-  //   })
-  // }
-
-  checkImage = (book) => {
-    if(book.imageLinks === undefined){
-      console.log("NO IMAGE")
-    } else {
-      return book.imageLinks.thumbnail
-    }
-  }
-
   render() {
     const { query, bookshelf } = this.state
-    const { books } = this.props
-
-    // const showBooks = query === "" ? [] : books.filter((content) => (
-    //   this.findAuthor(content, query)
-    //   ||
-    //   content.title.toLowerCase().includes(query.toLowerCase())
-    // ))
+    const { books, checkImage } = this.props
 
     return(
       <div className="search-books">
@@ -85,10 +63,9 @@ class Search extends Component {
           <div className="search-books-results">
             <ol className="books-grid">
               {bookshelf.map((book) => (
-                console.log(book),
                 <li key={book.id}>
                   <Book
-                    backgroundImage={this.checkImage(book)}
+                    backgroundImage={checkImage(book)}
                     title={book.title}
                     author={book.authors || []}
                     status={"none"}

@@ -6,8 +6,16 @@ class currentlyReading extends Component {
     status: "currentlyReading"
   }
 
+  checkImage = (book) => {
+    if(book.imageLinks === undefined){
+      console.log("NO IMAGE")
+    } else {
+      return book.imageLinks.thumbnail
+    }
+  }
+
   render() {
-    const { books } = this.props
+    const { books, checkImage } = this.props
 
     return(
       <div className="bookshelf">
@@ -17,7 +25,7 @@ class currentlyReading extends Component {
             {books.map((book) => (
               <li key={book.title}>
                 <Book
-                  backgroundImage={book.imageLinks.thumbnail}
+                  backgroundImage={checkImage(book)}
                   title={book.title}
                   author={book.authors}
                   status={this.state.status}

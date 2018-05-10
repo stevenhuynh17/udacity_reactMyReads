@@ -7,7 +7,7 @@ class WantToRead extends Component {
   }
 
   render() {
-    const { books } = this.props
+    const { books, checkImage } = this.props
 
     return(
       <div className="bookshelf">
@@ -17,7 +17,7 @@ class WantToRead extends Component {
             {books.map((book) => (
               <li key={book.title}>
                 <Book
-                  backgroundImage={book.imageLinks.thumbnail}
+                  backgroundImage={checkImage(book)}
                   title={book.title}
                   author={book.authors}
                   status={this.state.status}

@@ -39,21 +39,18 @@ class BooksApp extends React.Component {
 
   deleteOld = (previous, currentBook) => {
     if(previous === "wantToRead"){
-      console.log("INSIDE")
       this.setState((currentState) => ({
         wantToRead: currentState.wantToRead.filter((book) => {
           return book !== currentBook
         })
       }))
     } else if(previous === "read"){
-      console.log("INSIDE")
       this.setState((currentState) => ({
         read: currentState.read.filter((book) => {
           return book !== currentBook
         })
       }))
     } else if(previous === "currentlyReading"){
-      console.log("INSIDE")
       this.setState((currentState) => ({
         currentlyReading: currentState.currentlyReading.filter((book) => {
           return book !== currentBook
@@ -64,15 +61,12 @@ class BooksApp extends React.Component {
 
   handleChange = (book, event) => {
     if(event.target.value === "currentlyReading"){
-      console.log(book)
       BooksAPI.update(book, "currentlyReading")
         .then(() => {
           const previous = book.shelf
-          console.log(previous)
           this.setState((currentState) => ({
             currentlyReading: currentState.currentlyReading.concat([book])
-          }))
-          this.deleteOld(previous, book)
+          }), this.deleteOld(previous, book))
         })
     } else if(event.target.value === "wantToRead"){
       BooksAPI.update(book, "wantToRead")
@@ -80,8 +74,7 @@ class BooksApp extends React.Component {
           const previous = book.shelf
           this.setState((currentState) => ({
             wantToRead: currentState.wantToRead.concat([book])
-          }))
-          this.deleteOld(previous, book)
+          }), this.deleteOld(previous, book))
         })
     } else if(event.target.value === "read"){
       BooksAPI.update(book, "read")
@@ -89,9 +82,16 @@ class BooksApp extends React.Component {
           const previous = book.shelf
           this.setState((currentState) => ({
             read: currentState.read.concat([book])
-          }))
-          this.deleteOld(previous, book)
+          }), this.deleteOld(previous, book))
         })
+    }
+  }
+
+  checkImage = (book) => {
+    if(book.imageLinks === undefined){
+      console.log("NO IMAGE")
+    } else {
+      return book.imageLinks.thumbnail
     }
   }
 
@@ -106,14 +106,17 @@ class BooksApp extends React.Component {
                 <CurrentlyReading
                   books={this.state.currentlyReading}
                   handleChange={this.handleChange}
+                  checkImage={this.checkImage}
                 />
                 <WantToRead
                   books={this.state.wantToRead}
                   handleChange={this.handleChange}
+                  checkImage={this.checkImage}
                 />
                 <Read
                   books={this.state.read}
                   handleChange={this.handleChange}
+                  checkImage={this.checkImage}
                 />
               </div>
             </div>
@@ -129,6 +132,7 @@ class BooksApp extends React.Component {
           <Search
             books={this.state.bookshelf}
             handleChange={this.handleChange}
+            checkImage={this.checkImage}
           />
         )}/>
       </div>
